@@ -1,0 +1,147 @@
+<html>
+    <head>
+        <style>
+
+        body {
+            margin: 0 0;
+        }
+
+        .main {
+            padding-left: 3px;
+            padding-right: 3px;
+
+            font-family: arial, serif;
+
+            background-color: #002;
+            color: #EEF;
+            width: auto;
+            height: 100%;
+        }
+
+        .main .main_header {
+            font-style: bold;
+            font-size: 36px;
+            text-align: center;
+        }
+
+        .main .navegation {
+            text-align: center;
+            font-style: italic;
+            font-size: 12px;
+            word-spacing: 30px;
+        }
+
+        .main .navegation a:link {
+            color: #EEF;
+            text-decoration: none;
+        }
+
+        .main .navegation a:visited {
+            color: #EEF;
+            text-decoration: none;
+        }
+
+        .main .navegation a:hover {
+            color: #CCF;
+            text-decoration: underline;
+        }
+
+        .main .navegation a:active {
+            color: #CCF;
+            text-decoration: underline;
+        }
+
+        .main .header {
+            font-style: bold;
+            font-size: 24px;
+            margin-bottom: 3px;
+        }
+
+        .main p {
+            margin-top: 3px;
+        }
+
+        .main li {
+            text-indent: 6px;
+        }
+
+        .main .form {
+            margin-top: 12px;
+        }
+
+        .main .table {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .main input {
+            background-color: #EEF;
+            color: #002;
+            outline: none;
+            border: none;
+        }
+
+        .main textarea {
+            background-color: #EEF;
+            color: #002;
+            outline: none;
+            border: none;
+        }
+
+        .main td {
+            color: #EEF;
+        }
+
+        .main #compose .wide {
+            display: block;
+            width: 100%;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        </style>
+
+        <title>PrivateMail - Register</title>
+    </head>
+
+    <body>
+        <div class="main">
+            <div class="main_header">
+                PrivateMail
+            </div>
+
+            <div class="navegation">
+                <a href="{{ url_for('index') }}">Home</a>
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            </div>
+
+            {%if error %}
+            <div class="error">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <div class="form">
+                <form action="{{ url_for('register') }}" method="POST">
+                    <table class="table">
+
+                        <tr><td>Email:</td><td><input type="text" name="email"></input>@privatemail.in</td></tr>
+                        <tr><td>Password:</td><td><input type="password" name="password"></input></td></tr>
+                        <tr><td>Verify:</td><td><input type="password" name="verify"></input></td></tr>
+                        <tr><td>Public Key:</td><td><textarea rows="20" cols="70" name="key" spellcheck="false"></textarea></td></tr>
+                        <tr><td><input type="submit" value="Register" /></td></tr>
+
+                    </table>
+                </form>
+            </div>
+
+        </div>
+    </body>
+</html>

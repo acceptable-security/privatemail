@@ -1,0 +1,172 @@
+<html>
+    <head>
+        <style>
+
+        body {
+            margin: 0 0;
+        }
+
+        .main {
+            padding-left: 3px;
+            padding-right: 3px;
+
+            font-family: arial, serif;
+
+            background-color: #002;
+            color: #EEF;
+            width: auto;
+            height: 100%;
+        }
+
+        .main .main_header {
+            font-style: bold;
+            font-size: 36px;
+            text-align: center;
+        }
+
+        .main .navegation {
+            text-align: center;
+            font-style: italic;
+            font-size: 12px;
+            word-spacing: 30px;
+        }
+
+        .main .navegation a:link {
+            color: #EEF;
+            text-decoration: none;
+        }
+
+        .main .navegation a:visited {
+            color: #EEF;
+            text-decoration: none;
+        }
+
+        .main .navegation a:hover {
+            color: #CCF;
+            text-decoration: underline;
+        }
+
+        .main .navegation a:active {
+            color: #CCF;
+            text-decoration: underline;
+        }
+
+        .main .header {
+            font-style: bold;
+            font-size: 24px;
+            margin-bottom: 3px;
+        }
+
+        .main p {
+            margin-top: 3px;
+        }
+
+        .main li {
+            text-indent: 6px;
+        }
+
+        .main .form {
+            margin-top: 12px;
+        }
+
+        .main .table {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .main input {
+            background-color: #EEF;
+            color: #002;
+            outline: none;
+            border: none;
+        }
+
+        .main textarea {
+            background-color: #EEF;
+            color: #002;
+            outline: none;
+            border: none;
+        }
+
+        .main td {
+            color: #EEF;
+        }
+
+        .main #emails table, th, td {
+            border-collapse: collapse;
+            border: 0px solid #EEF;
+            color: #EEF;
+        }
+
+        .main #emails a:link {
+            color: #EEF;
+            text-decoration: none;
+        }
+
+        .main #emails a:visited {
+            color: #EEF;
+            text-decoration: none;
+        }
+
+        .main #emails a:hover {
+            color: #CCF;
+            text-decoration: underline;
+        }
+
+        .main #emails a:active {
+            color: #CCF;
+            text-decoration: underline;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        .main #compose .wide {
+            display: block;
+            width: 100%;
+        }
+
+        </style>
+
+        <title>PrivateMail - Compose</title>
+    </head>
+
+    <body>
+        <div class="main">
+            <div class="main_header">
+                PrivateMail
+            </div>
+
+            <div class="navegation">
+                <a href="{{ url_for('index') }}">Home</a>
+                <a href="{{ url_for('main') }}">Emails</a>
+                <a href="{{ url_for('compose') }}">Compose</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </div>
+
+            <br>
+
+            <div class="table" id="compose">
+                <form action="#" method="POST">
+                    <table class="table">
+                        {% if name %}
+                            <tr><td>To:</td><td><input type="text" name="to" class="wide" value ="{{ name }}"></input></td></tr>
+                        {% else %}
+                            <tr><td>To:</td><td><input type="text" name="to" class="wide"></input></td></tr>
+                        {% endif %}
+                        <tr><td>Subject:</td><td><input type="text" name="subject" class="wide"></input></td></tr>
+                        <tr><td></td><td><textarea rows="20" cols="50" name="message"></textarea></td></tr>
+                        <tr><td><input type="submit" value="Send" /></td></tr>
+
+                    </table>
+                </form>
+            </div>
+
+        </div>
+    </body>
+</html>

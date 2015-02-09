@@ -1,0 +1,277 @@
+<html>
+    <head>
+        <style>
+
+            body {
+                background-color: #002;
+                margin: 0 0;
+            }
+
+            .main {
+                padding-left: 3px;
+                padding-right: 3px;
+
+                font-family: arial, serif;
+
+                background-color: #002;
+                color: #EEF;
+                width: auto;
+                height: 100%;
+            }
+
+            .main .main_header {
+                font-style: bold;
+                font-size: 36px;
+                text-align: center;
+            }
+
+            .main .navegation {
+                text-align: center;
+                font-style: italic;
+                font-size: 12px;
+                word-spacing: 30px;
+            }
+
+            .main .navegation a:link {
+                color: #EEF;
+                text-decoration: none;
+            }
+
+            .main .navegation a:visited {
+                color: #EEF;
+                text-decoration: none;
+            }
+
+            .main .navegation a:hover {
+                color: #CCF;
+                text-decoration: underline;
+            }
+
+            .main .navegation a:active {
+                color: #CCF;
+                text-decoration: underline;
+            }
+
+            .main .header {
+                font-style: bold;
+                font-size: 24px;
+                margin-bottom: 3px;
+            }
+
+            .main p {
+                margin-top: 3px;
+            }
+
+            .main li {
+                text-indent: 6px;
+            }
+
+            .main .form {
+                margin-top: 12px;
+            }
+
+            .main .table {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .main input {
+                background-color: #EEF;
+                color: #002;
+                outline: none;
+                border: none;
+            }
+
+            .main textarea {
+                background-color: #EEF;
+                color: #002;
+                outline: none;
+                border: none;
+            }
+
+            .main td {
+                color: #EEF;
+            }
+
+            .main #emails table, th, td {
+                border-collapse: collapse;
+                border: 1px solid #EEF;
+                color: #EEF;
+                padding: 5px;
+                max-width: 50%;
+            }
+
+            .main #emails a:link {
+                color: #EEF;
+                text-decoration: none;
+            }
+
+            .main #emails a:visited {
+                color: #EEF;
+                text-decoration: none;
+            }
+
+            .main #emails a:hover {
+                color: #CCF;
+                text-decoration: underline;
+            }
+
+            .main #emails a:active {
+                color: #CCF;
+                text-decoration: underline;
+            }
+
+            .error {
+                color: red;
+                margin-top: 10px;
+                margin-left: auto;
+                margin-right: auto;
+                text-align: center;
+            }
+
+            .main #emails table {
+                min-width: 50%;
+                min-height: 50%
+            }
+
+            .wide {
+                height: 100%;
+                vertical-align: top;
+            }
+
+            .private_overlay {
+                z-index: 99;
+                background-color: rgba(100, 100, 100, 0.6);
+                width: 100%;
+                height: 100%;
+                position:absolute;
+                top: 0;
+                left: 0;
+                text-align: center;
+                vertical-align: center;
+            }
+
+            .private_overlay form {
+                padding-top: 10%;
+                display: block;
+                position: relative;
+            }
+        </style>
+
+        <script type="text/javascript" src="{{ url_for('static', filename='jsencrypt.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='sha256.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='support.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='salsa20.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='crypto.js') }}"></script>
+        <script language="JavaScript">
+            function decrypt() {
+                var prv = document.getElementById("private").value;
+                var key = "{{ key }}";
+                var non = "{{ nonce }}";
+                var ver = "{{ ver }}";
+                var vky = "{{ ver_key }}";
+                var msg = "{{ msg }}";
+
+                var dec = decrypt_msg(msg, prv, key, non);
+                var goo = verify_msg(msg, vky, ver, prv);
+
+                document.getElementById("private_overlay").remove();
+
+                if(false)//!goo)
+                    alert("Messaged failed verification!");
+                else {
+                    displayMessage(dec);
+                }
+            }
+
+            function displayMessage(msg) {
+                var dec = msg.split('\n');
+
+                for(var i = 0; i < dec.length; i++) {
+                    var header = dec[i];
+
+                    if(header == "") {
+                        break;
+                    }
+                    else {
+                        header = header.split(': ');
+
+                        switch(header[0]) {
+                            case "From":
+                                var to = header[1].substring(header[1].indexOf("<")+1, header[1].indexOf(">"));
+                                document.getElementById(header[0].toLowerCase()).innerHTML = "<a href='/compose/" + to + "'>" + header[1].replace("<", "&lt;").replace(">", "&gt;");
+                                break;
+
+                            /*case "To":
+                                document.getElementById(header[0].toLowerCase()).value = header[1];
+                                break;*/
+
+                            case "Date":
+                                document.getElementById(header[0].toLowerCase()).innerHTML = header[1];
+                                break;
+
+                            case "Subject":
+                                document.getElementById(header[0].toLowerCase()).innerHTML = header[1];
+                                break;
+
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                var sizeInBytes = encodeURI(msg).split(/%..|./).length - 1;
+                document.getElementById("size").innerHTML = sizeInBytes.toString() + "B";
+
+                var msg = dec.slice(i+1).join('<br>');
+                document.getElementById("message").innerHTML = msg;
+            }
+
+            function init() {
+                document.forms["prvform"].onsubmit = function(e) {
+                    if(e.preventDefault) e.preventDefault();
+                    document.getElementById("button").disabled = true;
+                    decrypt();
+                    return false;
+                }
+            }
+
+        </script>
+
+        <title>PrivateMail - Read</title>
+    </head>
+
+    <body onload="init()">
+        <div class="main">
+            <div class="main_header">
+                PrivateMail
+            </div>
+
+            <div class="navegation">
+                <a href="{{ url_for('index') }}">Home</a>
+                <a href="{{ url_for('main') }}">Emails</a>
+                <a href="{{ url_for('compose') }}">Compose</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </div>
+            <br>
+
+
+
+            <div class="private_overlay" id="private_overlay">
+                <form id="prvform">
+                    <textarea rows="20" cols="70" id="private" spellcheck="false"></textarea>
+                    <input type="submit" value="Decrypt" id="button" />
+                </form>
+            </div>
+            <div id="emails">
+                <table class="table">
+                    <tr class="thin"><th>From: </th><td id="from">Unknown</td></tr>
+                    <tr class="thin"><th>Date: </th><td id="date">Unknown</td></tr>
+                    <tr class="thin"><th>Size: </th><td id="size">??B</td></tr>
+                    <tr class="thin"><th>Subject: </th><td id="subject">Unknown</td></tr>
+                    <tr class="wide"><th>Message:</th><td id="message"></td></tr>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

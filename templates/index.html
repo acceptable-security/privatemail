@@ -1,0 +1,142 @@
+<html>
+    <head>
+        <style>
+
+        body {
+            margin: 0 0;
+        }
+
+        .main {
+            padding-left: 3px;
+            padding-right: 3px;
+
+            font-family: arial, serif;
+
+            background-color: #002;
+            color: #EEF;
+            width: auto;
+            height: 100%;
+        }
+
+        .main .main_header {
+            font-style: bold;
+            font-size: 36px;
+            text-align: center;
+        }
+
+        .main .navegation {
+            text-align: center;
+            font-style: italic;
+            font-size: 12px;
+            word-spacing: 30px;
+        }
+
+        .main .navegation a:link {
+            color: #EEF;
+            text-decoration: none;
+        }
+
+        .main .navegation a:visited {
+            color: #EEF;
+            text-decoration: none;
+        }
+
+        .main .navegation a:hover {
+            color: #CCF;
+            text-decoration: underline;
+        }
+
+        .main .navegation a:active {
+            color: #CCF;
+            text-decoration: underline;
+        }
+
+        .main .header {
+            font-style: bold;
+            font-size: 24px;
+            margin-bottom: 3px;
+        }
+
+        .main p {
+            margin-top: 3px;
+        }
+
+        .main li {
+            text-indent: 6px;
+        }
+
+        </style>
+
+        <title>PrivateMail - Home</title>
+    </head>
+
+    <body>
+        <div class="main">
+            <div class="main_header">
+                PrivateMail
+            </div>
+
+            {% if not logged_in %}
+                <div class="navegation">
+                    <a href="{{ url_for('index') }}">Home</a>
+                    <a href="{{ url_for('login') }}">Login</a>
+                    <a href="{{ url_for('register') }}">Register</a>
+                </div>
+            {% else %}
+                <div class="navegation">
+                    <a href="{{ url_for('index') }}">Home</a>
+                    <a href="{{ url_for('main') }}">Emails</a>
+                    <a href="{{ url_for('compose') }}">Compose</a>
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                </div>
+            {% endif %}
+
+            <div class="header">
+                About
+            </div>
+
+            <p>
+                PrivateMail is dedicated to your security and privacy. When you register, you are required to copy and paste a public key, which is stored with your account. Then, all emails that are sent to your account are automatically encrypted. This way, even in the case of a raid it would be impossible for them to get any of the information, because it is all encrypted with <i>your</i> keys. No plain text copies of the messages would be stored. Decryption is completely in browser and impossible serversidedly. We will <b><u>NEVER</u></b> ask for your private key.
+            </p>
+
+            <div class="header">
+                Rules
+            </div>
+
+            <p>
+                <table>
+                    <li>Don't be a fucking idiot</li>
+                </table>
+            </p>
+
+            <div class="header">
+                Guide to Generating Keys
+            </div>
+
+            <p>
+                <list>
+                    <li> Install OpenSSL.</li>
+                    <li> Go into console and type <i>openssl genrsa -out private.key 4096</i>.</li>
+                    <li> Then type <i>openssl rsa -pubout -in private.key -out public.key</i>.</li>
+                    <li> It is vital that you use the .key extension so that the system will be able to understand it and perform the appropriate cryptographic calculations.</li>
+                <list>
+            </p>
+
+            <div class="header">
+                Understanding the Protocol
+            </div>
+
+            <p>
+                When you sign up for privatemail, your username and password are HMAC'd with seperate passwords. A folder is created with a hash of the hmac of your username, and all emails sent to you are stored there. When you are sent an email from this service, the email is encrypted with random bytes in salsa20, then those random bytes are encrypted with your RSA key. The encrypted message is hashed with another random key and that other random key is encrypted with your RSA key. This makes a secure salsa20 based authenticated (non tamperable) system, secure from MiTM attacks (all decryptions are done in browser - we never have access to any information that could decrypt the emails).
+            </p>
+
+            <div class="header">
+                Privacy Statement
+            </div>
+
+            <p>
+                By registering for the service "PrivateMail" you are forfitting your left testicle, 3 eye lashes, your foreskin, all earthly possessions that you own. Any hairs inside or outside your body is now mine, and if you have any scabs those are also now mine. Also if you have any grass on your lawn that is too now mine, but not the property. If you are 16&deg; north of me and are eating a fried pickle on a Tuesday night, I have the right to a vile of semen. If you are currently pregnate with two young boys one of them is to be thrown onto an iceberg for 30 days. This is his right of passage. If you have exactly 3 grams of gold sitting directly 3ft from you, you are a spawn of satan and must do 30 pushups before sending your 23rd email (only if on a monday). On the slim chance that you belly dance on the bar of a portuguese restraunt on thursday nights during rain storms to North African hip hop, you must send append the letter Q to the end of your password to ensure that the tiki lord shiguigui doesn't come up and devour your soul.
+            </p>
+        </div>
+    </body>
+</html>
